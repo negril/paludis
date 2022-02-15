@@ -97,12 +97,12 @@ S="${WORKDIR}"
 
 pkg_pretend() {
     for option in -r -b -d; do
-        if ! best_version ${option} cat/pretend-installed >/dev/null ; then
-            die 'failed cat/pretend-installed'
+        if ! best_version ${option} cat/best-version-has-version-pretend-installed >/dev/null ; then
+            die 'failed cat/best-version-has-version-pretend-installed'
         fi
 
-        BV1=$(best_version ${option} cat/pretend-installed )
-        [[ "${BV1}" == 'cat/pretend-installed-1' ]] || die "BV1 is ${BV1}"
+        BV1=$(best_version ${option} cat/best-version-has-version-pretend-installed )
+        [[ "${BV1}" == 'cat/best-version-has-version-pretend-installed-1' ]] || die "BV1 is ${BV1}"
 
         if best_version ${option} cat/doesnotexist >/dev/null ; then
             die 'not failed cat/doesnotexist'
@@ -587,8 +587,8 @@ S="${WORKDIR}"
 
 pkg_pretend() {
     for option in -r -b -d; do
-    if ! has_version ${option} cat/pretend-installed ; then
-        die 'failed cat/pretend-installed'
+    if ! has_version ${option} cat/has-version-pretend-installed ; then
+        die 'failed cat/has-version-pretend-installed'
     fi
 
     if has_version ${option} cat/doesnotexist >/dev/null ; then

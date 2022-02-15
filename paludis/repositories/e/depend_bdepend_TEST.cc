@@ -210,7 +210,7 @@ TEST_P(DependBdependTest, Works)
     }
 }
 
-INSTANTIATE_TEST_CASE_P(DependBdepend, DependBdependTest, testing::Values(
+INSTANTIATE_TEST_SUITE_P(DependBdepend, DependBdependTest, testing::Values(
             TestParams{"6"},
             TestParams{"7"}
             ));

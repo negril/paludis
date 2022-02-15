@@ -35,3 +35,8 @@ install(PROGRAMS
         DESTINATION
           "${CMAKE_INSTALL_FULL_LIBEXECDIR}/paludis")
 
+add_custom_target(ebuild_scripts)
+add_dependencies(ebuild_scripts locked_pipe_command strip_tar_corruption)
+if(ENABLE_PBINS)
+  add_dependencies(ebuild_scripts unpaxinate)
+endif()

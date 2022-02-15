@@ -2,7 +2,7 @@
 include(CMakeParseArguments)
 
 function(paludis_add_test test_name)
-  set(options BASH GTEST PYTHON RUBY)
+  set(options BASH GTEST PYTHON RUBY DISCOVER)
   set(single_value_args EBUILD_MODULE_SUFFIXES TEST_RUNNER)
   set(multiple_value_args LINK_LIBRARIES)
 
@@ -66,6 +66,7 @@ function(paludis_add_test test_name)
 
   # NOTE(compnerd) the trailing slash on the TEST_SCRIPT_DIR is important as
   # the harness will not add that for us
+  if(NOT PAT_DISCOVER AND NOT (PAT_GTEST AND NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${test_name}_setup.sh" AND NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${test_name}_cleanup.sh"))
   add_test(NAME
              ${pat_display_name}
            COMMAND
@@ -101,5 +102,42 @@ function(paludis_add_test test_name)
                     SYDBOX_ACTIVE=\${SYDBOX_ACTIVE}
                     ${pat_environment_variables}
              "${BASH_EXECUTABLE}" ${pat_test_runner} "${pat_test_binary}")
+    else()
+    gtest_discover_tests(
+       ${test_name}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      PROPERTIES
+        ENVIRONMENT LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/paludis
+        ENVIRONMENT PALUDIS_BYPASS_USERPRIV_CHECKS=YES
+        ENVIRONMENT PALUDIS_DEFAULT_OUTPUT_CONF=${PROJECT_SOURCE_DIR}/paludis/environments/paludis/tests_output.conf
+        ENVIRONMENT PALUDIS_DISTRIBUTION=gentoo
+        ENVIRONMENT PALUDIS_DISTRIBUTIONS_DIR=${PROJECT_SOURCE_DIR}/paludis/distributions
+        ENVIRONMENT PALUDIS_EAPIS_DIR=${PROJECT_SOURCE_DIR}/paludis/repositories/e/eapis
+        ENVIRONMENT PALUDIS_EBUILD_DIR=${PROJECT_SOURCE_DIR}/paludis/repositories/e/ebuild
+        ENVIRONMENT PALUDIS_EBUILD_DIR_FALLBACK=${CMAKE_BINARY_DIR}/paludis/repositories/e/ebuild
+        ENVIRONMENT PALUDIS_ECHO_FUNCTIONS_DIR=${CMAKE_BINARY_DIR}/paludis/util
+        ENVIRONMENT PALUDIS_EXTRA_EBUILD_MODULES_DIRS=${CMAKE_BINARY_DIR}/paludis/util
+        ENVIRONMENT PALUDIS_FETCHERS_DIR=${PROJECT_SOURCE_DIR}/paludis/fetchers
+        ENVIRONMENT PALUDIS_HOOKER_DIR=${PROJECT_SOURCE_DIR}/paludis
+        ENVIRONMENT PALUDIS_NO_CHOWN=YES
+        ENVIRONMENT PALUDIS_NO_GLOBAL_HOOKS=YES
+        ENVIRONMENT PALUDIS_NO_GLOBAL_SETS=YES
+        ENVIRONMENT PALUDIS_NO_XTERM_TITLES=YES
+        ENVIRONMENT PALUDIS_PC_SLOT=${PALUDIS_PKG_CONFIG_SLOT}
+        ENVIRONMENT PALUDIS_PYTHON_DIR=${PROJECT_SOURCE_DIR}/python
+        ENVIRONMENT PALUDIS_SUFFIXES_FILE=${PROJECT_SOURCE_DIR}/paludis/repositories/e/ebuild_entries_suffixes.conf
+        ENVIRONMENT PALUDIS_TMPDIR=${CMAKE_CURRENT_BINARY_DIR}
+        ENVIRONMENT PYTHON=${PYTHON_EXECUTABLE}
+        ENVIRONMENT PYTHONPATH=${CMAKE_BINARY_DIR}/python
+        ENVIRONMENT RUBY=${RUBY_EXECUTABLE}
+        ENVIRONMENT RUBYLIB=${CMAKE_BINARY_DIR}/ruby
+        ENVIRONMENT SO_SUFFIX=${version_major}
+        ENVIRONMENT SYSCONFDIR=${CMAKE_INSTALL_FULL_SYSCONFDIR}
+        ENVIRONMENT TEST_SCRIPT_DIR=${CMAKE_CURRENT_SOURCE_DIR}
+        ENVIRONMENT TOP_BUILDDIR=${CMAKE_BINARY_DIR}
+        ENVIRONMENT TEST_NAME=${test_name}
+        ${pat_environment_variables}
+    )
+    endif()
 endfunction()
 

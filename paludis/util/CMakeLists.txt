@@ -131,11 +131,8 @@ foreach(test
           whirlpool
           blake2b
           wrapped_forward_iterator
-          wrapped_value)
-  paludis_add_test(${test} GTEST)
-endforeach()
+          wrapped_value
 
-foreach(test
           config_file
           fs_iterator
           fs_path

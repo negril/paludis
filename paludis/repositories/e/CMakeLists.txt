@@ -106,10 +106,8 @@ foreach(test
           aa_visitor
           dep_parser
           fix_locked_dependencies
-          source_uri_finder)
-  paludis_add_test(${test} GTEST)
-endforeach()
-foreach(test
+          source_uri_finder
+
           vdb_repository
           vdb_repository_TEST_eapis
           vdb_repository_TEST_cache
@@ -120,9 +118,6 @@ foreach(test
           e_repository_TEST_3
           e_repository_TEST_4
           e_repository_TEST_5
-          e_repository_TEST_6
-          e_repository_TEST_7
-          e_repository_TEST_8
           e_repository_TEST_ever
           e_repository_TEST_exheres_0
           e_repository_TEST_exlibs
@@ -139,6 +134,14 @@ foreach(test
           vdb_merger
           vdb_unmerger)
   paludis_add_test(${test} GTEST)
+endforeach()
+
+foreach(test
+          e_repository_TEST_6
+          e_repository_TEST_7
+          e_repository_TEST_8
+          )
+  paludis_add_test(${test} GTEST DISCOVER)
 endforeach()
 
 if(ENABLE_XML)
