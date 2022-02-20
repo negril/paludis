@@ -351,6 +351,7 @@ namespace
             typename ParseStackTypes<T_>::Stack & stack,
             const typename ParseStackTypes<T_>::AnnotationsGoHere & annotations_go_here,
             const typename ParseStackTypes<T_>::StarAnnotationsGoHere & star_annotations_go_here,
+            const EAPI & eapi,
             const std::string & s)
     {
         annotations_go_here(stack.begin()->spec());
@@ -362,6 +363,9 @@ namespace
         stack.pop_front();
         if (stack.empty())
             throw EDepParseError(s, "Too many ')'s");
+
+        if (eapi.supported()->dependency_spec_tree_parse_options()[dstpo_disallow_empty_dep_group] && children.empty() && block_children.empty() &&  (std::static_pointer_cast<AllDepSpec>(stack.front().spec()) || std::static_pointer_cast<ExactlyOneDepSpec>(stack.front().spec())))
+            throw EDepParseError(s, "empty group not allowed");
 
         stack.begin()->children().insert(stack.begin()->children().end(), children.begin(), children.end());
         stack.begin()->block_children().insert(stack.begin()->block_children().end(), block_children.begin(), block_children.end());
@@ -540,6 +544,7 @@ paludis::erepository::parse_depend(const std::string & s, const Environment * co
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<DependencySpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<DependencySpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&package_or_block_dep_spec_string_handler<DependencySpecTree>, std::ref(stack),
@@ -590,6 +595,7 @@ paludis::erepository::parse_commented_set(const std::string & s, const Environme
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<SetSpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<SetSpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&package_dep_spec_string_handler<SetSpecTree>, std::ref(stack),
@@ -644,6 +650,7 @@ paludis::erepository::parse_fetchable_uri(const std::string & s, const Environme
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<FetchableURISpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<FetchableURISpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&arrow_handler<FetchableURISpecTree>, std::ref(stack),
@@ -691,6 +698,7 @@ paludis::erepository::parse_simple_uri(const std::string & s, const Environment 
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<SimpleURISpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<SimpleURISpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&simple_uri_handler<SimpleURISpecTree>, std::ref(stack),
@@ -738,6 +746,7 @@ paludis::erepository::parse_license(const std::string & s, const Environment * c
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<LicenseSpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<LicenseSpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&license_handler<LicenseSpecTree>, std::ref(stack),
@@ -785,6 +794,7 @@ paludis::erepository::parse_plain_text(const std::string & s, const Environment 
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<PlainTextSpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<PlainTextSpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&plain_text_handler<PlainTextSpecTree>, std::ref(stack),
@@ -834,6 +844,7 @@ paludis::erepository::parse_myoptions(const std::string & s, const Environment *
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<PlainTextSpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<PlainTextSpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&plain_text_handler<PlainTextSpecTree>, std::ref(stack),
@@ -884,6 +895,7 @@ paludis::erepository::parse_required_use(const std::string & s, const Environmen
                             &set_thing_to_annotate, std::ref(thing_to_annotate), _1)),
                     ParseStackTypes<RequiredUseSpecTree>::StarAnnotationsGoHere(std::bind(
                             &set_thing_to_star_annotate, std::ref(thing_to_star_annotate), _1)),
+                    std::cref(eapi),
                     s),
                 n::on_should_be_empty() = std::bind(&should_be_empty_handler<RequiredUseSpecTree>, std::ref(stack), s),
                 n::on_string() = std::bind(&plain_text_handler<RequiredUseSpecTree>, std::ref(stack),

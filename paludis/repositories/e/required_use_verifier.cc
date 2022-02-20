@@ -18,6 +18,7 @@
  */
 
 #include <paludis/repositories/e/required_use_verifier.hh>
+#include <paludis/repositories/e/eapi.hh>
 #include <paludis/util/pimp-impl.hh>
 #include <paludis/util/indirect_iterator-impl.hh>
 #include <paludis/util/save.hh>
@@ -148,6 +149,8 @@ RequiredUseVerifier::visit(const RequiredUseSpecTree::NodeType<AnyDepSpec>::Type
         ++_imp->stack.begin()->number_met;
     else if (met.any_unmet)
         _imp->stack.begin()->any_unmet = true;
+    else if ( _imp->id->eapi()->supported()->dependency_spec_tree_parse_options()[dstpo_disallow_empty_dep_group] )
+        _imp->stack.begin()->any_unmet = true;
     else
     {
         /* || ( disabled? ( bar ) ) and || ( ) are true. yay Portage! */
@@ -169,6 +172,8 @@ RequiredUseVerifier::visit(const RequiredUseSpecTree::NodeType<ExactlyOneDepSpec
     else if (met.number_met > 1)
         _imp->stack.begin()->any_unmet = true;
     else if (met.any_unmet)
+        _imp->stack.begin()->any_unmet = true;
+    else if ( _imp->id->eapi()->supported()->dependency_spec_tree_parse_options()[dstpo_disallow_empty_dep_group] )
         _imp->stack.begin()->any_unmet = true;
     else
         ++_imp->stack.begin()->number_met;

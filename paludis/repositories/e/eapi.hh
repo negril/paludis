@@ -33,6 +33,7 @@
 #include <paludis/merger-fwd.hh>
 #include <paludis/fs_merger-fwd.hh>
 #include <memory>
+#include <list>
 
 namespace paludis
 {
@@ -315,6 +316,11 @@ namespace paludis
                  * Make the unknown EAPI.
                  */
                 std::shared_ptr<const EAPI> unknown_eapi() const;
+
+                /**
+                 * Make a list of know EAPIs.
+                 */
+                std::list<std::string> known_eapis() const;
         };
 
         struct EAPI

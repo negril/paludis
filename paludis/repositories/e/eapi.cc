@@ -492,6 +492,16 @@ EAPIData::unknown_eapi() const
                 );
 }
 
+std::list<std::string>
+paludis::erepository::EAPIData::known_eapis() const
+{
+    std::list<std::string> eapis;
+    for (auto& n : _imp->values) {
+        eapis.push_back(n.first);
+    }
+    return eapis;
+}
+
 namespace paludis
 {
     template <>

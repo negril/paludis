@@ -847,7 +847,27 @@ LICENSE="GPL-2"
 KEYWORDS="test"
 
 # This will trigger an error if gen_deps outputs empty string
-DEPEND="|| ( $(gen_deps) )"
+DEPEND="|| ( $(gen_deps) ) "
+BDEPEND="|| ( $(gen_deps) ) "
+RDEPEND="|| ( $(gen_deps) ) "
+END
+
+cat <<'END' > cat/selectors-dep/selectors-dep-6.ebuild
+EAPI="6"
+inherit test
+
+DESCRIPTION="The Description"
+HOMEPAGE="http://example.com/"
+SRC_URI=""
+SLOT="0"
+IUSE=""
+LICENSE="GPL-2"
+KEYWORDS="test"
+
+# This will trigger an error if gen_deps outputs empty string
+DEPEND="|| ( $(gen_deps) ) "
+BDEPEND="|| ( $(gen_deps) ) "
+RDEPEND="|| ( $(gen_deps) ) "
 END
 
 mkdir -p "cat/selectors-or"
@@ -881,3 +901,20 @@ KEYWORDS="test"
 # EAPI 7: requires a+foo XOR b+bar
 REQUIRED_USE="^^ ( a? ( foo ) b? ( bar ) )"
 END
+
+mkdir -p "cat/dep-group-test"
+for i in 6 7; do
+cat <<END > cat/dep-group-test/dep-group-test-$i.ebuild
+EAPI="$i"
+DESCRIPTION="The Description"
+HOMEPAGE="http://example.com/"
+SRC_URI=""
+SLOT="0"
+IUSE="a b c d e f g h i j k l m n o p q r s t u v w x y z foo bar"
+LICENSE="GPL-2"
+
+REQUIRED_USE="a b"
+
+END
+done
+
