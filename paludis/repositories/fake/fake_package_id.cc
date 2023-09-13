@@ -48,6 +48,7 @@
 #include <paludis/util/indirect_iterator-impl.hh>
 #include <paludis/util/singleton-impl.hh>
 #include <paludis/util/join.hh>
+#include <paludis/util/upper_lower.hh>
 
 #include <map>
 #include <list>
@@ -428,7 +429,7 @@ namespace
 
         const ChoiceNameWithPrefix name_with_prefix() const override
         {
-            return ChoiceNameWithPrefix((choice->prefix().value().empty() ? "" : stringify(choice->prefix()) + ":") + stringify(value_name));
+            return ChoiceNameWithPrefix((choice->prefix().value().empty() ? "" : stringify(choice->prefix()) + "_") + stringify(value_name));
         }
 
         bool enabled() const override
@@ -487,14 +488,14 @@ FakeMetadataChoicesKey::add(const std::string & n, const std::string & v)
     if (_imp->choices.end() == _imp->choices.find(n))
     {
         std::shared_ptr<Choice> c(std::make_shared<Choice>(make_named_values<ChoiceParams>(
-                        n::consider_added_or_changed() = false,
+                        n::consider_added_or_changed() = true,
                         n::contains_every_value() = false,
                         n::hidden() = false,
                         n::hide_description() = false,
-                        n::human_name() = n.empty() ? "default" : n,
-                        n::prefix() = ChoicePrefixName(n),
-                        n::raw_name() = n.empty() ? "default" : n,
-                        n::show_with_no_prefix() = false
+                        n::human_name() = n.empty() ? "USE" : tolower(n),
+                        n::prefix() = ChoicePrefixName(tolower(n)),
+                        n::raw_name() =  n.empty() ? "" : stringify(n),
+                        n::show_with_no_prefix() = n.empty() ? true: false
                         )));
         _imp->value->add(c);
         _imp->choices.insert(std::make_pair(n, c));
@@ -649,6 +650,7 @@ namespace paludis
         mutable std::shared_ptr<FakeMetadataSpecTreeKey<SimpleURISpecTree> > homepage;
         mutable std::shared_ptr<FakeMetadataChoicesKey> choices;
         mutable std::shared_ptr<LiteralMetadataValueKey<long> > hitchhiker;
+        mutable std::shared_ptr<LiteralMetadataStringSetKey> raw_use_expand;
         mutable std::shared_ptr<LiteralMetadataStringSetKey> behaviours;
 
         std::shared_ptr<Set<std::string> > behaviours_set;
@@ -956,6 +958,11 @@ FakePackageID::need_keys_added() const
         _imp->hitchhiker = std::make_shared<LiteralMetadataValueKey<long>>("HITCHHIKER", "Hitchhiker",
                     mkt_internal, 42);
 
+        auto use_expand = std::make_shared<paludis::Set<std::string>>();
+        use_expand->insert("PYTHON_TARGETS");
+        _imp->raw_use_expand = std::make_shared<LiteralMetadataStringSetKey>("USE_EXPAND", "use_expand",
+                                                                           mkt_internal, use_expand);
+
         _imp->keywords = std::make_shared<FakeMetadataKeywordSetKey>("KEYWORDS", "Keywords", "test", mkt_normal, shared_from_this(), _imp->env);
 
         add_metadata_key(_imp->slot);
@@ -970,6 +977,7 @@ FakePackageID::need_keys_added() const
         add_metadata_key(_imp->choices);
         add_metadata_key(_imp->behaviours);
         add_metadata_key(_imp->hitchhiker);
+        add_metadata_key(_imp->raw_use_expand);
         add_metadata_key(_imp->keywords);
     }
 }

@@ -20,6 +20,8 @@
 #ifndef PALUDIS_GUARD_PALUDIS_SPEC_TREE_HH
 #define PALUDIS_GUARD_PALUDIS_SPEC_TREE_HH 1
 
+#include <paludis/util/type_list.hh>
+#include <paludis/dep_spec.hh>
 #include <paludis/spec_tree-fwd.hh>
 #include <paludis/util/wrapped_forward_iterator.hh>
 #include <paludis/util/visitor.hh>
@@ -28,6 +30,12 @@
 
 namespace paludis
 {
+    template <typename T_>
+    struct SpecTreeInnerNodeType{};
+
+    template <typename T_>
+    struct SpecTreeLeafNodeType{};
+
     namespace spec_tree_internals
     {
         template <typename Tree_>
@@ -173,14 +181,18 @@ namespace paludis
 
             const std::shared_ptr<typename InnerNodeType<RootNode_>::Type> top();
 
+            const std::shared_ptr<RootNode_> top2();
+
             const std::shared_ptr<const typename InnerNodeType<RootNode_>::Type> top() const;
+
+            const std::shared_ptr<const RootNode_> top2() const;
 
         private:
             const std::shared_ptr<typename InnerNodeType<RootNode_>::Type> _top;
     };
 
     extern template class PALUDIS_VISIBLE SpecTree<MakeTypeList<
-        SpecTreeLeafNodeType<PlainTextDepSpec>,
+            SpecTreeLeafNodeType<PlainTextDepSpec>,
             SpecTreeLeafNodeType<PlainTextLabelDepSpec>,
             SpecTreeLeafNodeType<SimpleURIDepSpec>,
             SpecTreeLeafNodeType<FetchableURIDepSpec>,

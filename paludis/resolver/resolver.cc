@@ -43,6 +43,9 @@
 #include <algorithm>
 #include <set>
 
+// #include <paludis/util/printer-impl.hh>
+// #include <paludis/serialise_pp-impl.hh>
+
 using namespace paludis;
 using namespace paludis::resolver;
 
@@ -168,8 +171,35 @@ Resolver::purge()
 void
 Resolver::resolve()
 {
+    std::ostringstream ss1;
+    std::ostringstream ss2;
+    std::ostringstream ss3;
+    using paludis::operator<<;
+
+    // std::cout << _imp->resolved << std::endl;
+    // Serialiser ser1(ss1);
+    // _imp->resolved->serialise(ser1);
+    // std::cout << SerialiserPrettyPrinter()(ss1.str()) << std::endl;
+
     _imp->decider->resolve();
+    // std::cout << _imp->resolved << std::endl;
+    // Serialiser ser2(ss2);
+    // _imp->resolved->serialise(ser2);
+    // std::cout << SerialiserPrettyPrinter()(ss2.str()) << std::endl;
+
     _imp->orderer->resolve();
+    // std::cout << _imp->resolved << std::endl;
+    // Serialiser ser3(ss3);
+    // _imp->resolved->serialise(ser3);
+    // std::cout << SerialiserPrettyPrinter()(ss3.str()) << std::endl;
+
+    // for (NAG::NodesConstIterator e(_imp->resolved->nag()->begin_nodes()),
+    //         e_end(_imp->resolved->nag()->end_nodes()) ;
+    //         e != e_end ; ++e)
+    // {
+    //     auto f = e->resolvent();
+    // }
+
     _imp->env->trigger_notifier_callback(NotifierCallbackResolverStageEvent("Done"));
 }
 

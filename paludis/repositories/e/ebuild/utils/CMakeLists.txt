@@ -82,6 +82,9 @@ install(PROGRAMS
           "${CMAKE_CURRENT_SOURCE_DIR}/wrapped_getmtime"
         DESTINATION
           "${CMAKE_INSTALL_FULL_LIBEXECDIR}/paludis/utils")
+
+add_custom_target( unpack DEPENDS strip_tar_corruption )
+
 install(TARGETS
           locked_pipe_command
           strip_tar_corruption

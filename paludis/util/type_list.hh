@@ -35,6 +35,11 @@ namespace paludis
         typedef Tail_ Tail;
     };
 
+    template <typename...>
+    struct MakeTypeList
+    {
+    };
+
     template <>
     struct MakeTypeList<>
     {

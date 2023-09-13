@@ -19,6 +19,7 @@
 
 #include <paludis/dep_spec.hh>
 #include <paludis/spec_tree.hh>
+#include <paludis/util/type_list.hh>
 #include <paludis/util/sequence-impl.hh>
 #include <paludis/util/wrapped_forward_iterator-impl.hh>
 #include <paludis/util/indirect_iterator-impl.hh>
@@ -130,6 +131,18 @@ const std::shared_ptr<const typename SpecTree<NodeList_, RootNode_>::template In
 SpecTree<NodeList_, RootNode_>::top() const
 {
     return _top;
+}
+
+// template<typename NodeList_, typename RootNode_>
+// const std::shared_ptr<RootNode_> paludis::SpecTree<NodeList_, RootNode_>::top2()
+// {
+//     return _top->spec();
+// }
+
+template<typename NodeList_, typename RootNode_>
+const std::shared_ptr<const RootNode_> paludis::SpecTree<NodeList_, RootNode_>::top2() const
+{
+    return _top->spec();
 }
 
 namespace
@@ -628,3 +641,10 @@ template InnerNode<RequiredUseSpecTree, AtMostOneDepSpec>::operator InnerNode<Ge
 template InnerNode<RequiredUseSpecTree, ConditionalDepSpec>::operator InnerNode<GenericSpecTree, ConditionalDepSpec> () const;
 template LeafNode<RequiredUseSpecTree, PlainTextDepSpec>::operator LeafNode<GenericSpecTree, PlainTextDepSpec> () const;
 
+
+namespace paludis {
+    std::ostream& operator<<(std::ostream& out, const DependencySpecTree& s)
+    {
+        return out << s.top();
+    }
+}

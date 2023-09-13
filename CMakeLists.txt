@@ -6,6 +6,8 @@ cmake_policy(SET CMP0051 NEW)
 cmake_policy(SET CMP0057 NEW)
 cmake_policy(SET CMP0058 NEW)
 
+set(CMAKE_WARN_DEPRECATED true)
+
 project(paludis VERSION 3.0.1
     DESCRIPTION "The one true package mangler"
     HOMEPAGE_URL "https://paludis.exherbolinux.org/"

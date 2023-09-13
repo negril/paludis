@@ -758,6 +758,24 @@ namespace
         void visit(const MetadataValueKey<std::shared_ptr<const Choices> > & k)
         {
             auto choices(k.parse_value());
+
+            // for (Choices::ConstIterator c(choices->begin()), c_end(choices->end()) ;
+            //     c != c_end ; ++c)
+            // {
+            //     auto _a = (*c)->raw_name();
+            //     auto _b = (*c)->human_name();
+            //     auto _c = (*c)->prefix().value();
+            //     for (Choice::ConstIterator v((*c)->begin()), v_end((*c)->end()) ;
+            //         v != v_end ; ++v)
+            //     {
+            //         auto _d = (*v)->name_with_prefix();
+            //         auto _e = (*v)->unprefixed_name();
+            //         auto _f = (*v)->enabled();
+            //         auto _g = (*v)->origin();
+            //         auto _h = (*v)->parameter();
+            //     }
+            // }
+
             if (cmdline.a_flat.specified())
             {
                 std::stringstream s;

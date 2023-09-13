@@ -30,6 +30,9 @@
 #include <paludis/serialise-fwd.hh>
 #include <memory>
 
+#include <paludis/resolver/decision.hh>
+#include <paludis/resolver/decisions.hh>
+#include <paludis/resolver/resolutions_by_resolvent.hh>
 namespace paludis
 {
     namespace n

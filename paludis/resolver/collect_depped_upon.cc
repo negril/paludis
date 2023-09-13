@@ -44,6 +44,11 @@
 #include <initializer_list>
 #include <sstream>
 
+// #include <iostream>
+// #include <paludis/unformatted_pretty_printer.hh>
+// #include <paludis/repositories/e/spec_tree_pretty_printer.hh>
+// #include <src/clients/cave/colour_pretty_printer.hh>
+
 using namespace paludis;
 using namespace paludis::resolver;
 
@@ -244,6 +249,19 @@ paludis::resolver::dependent_upon(
             auto key(((*id).*fn)());
             if (key)
             {
+                // if(id->name() == QualifiedPackageName("app-emulation/spice"))
+                // {
+                //     cave::ColourPrettyPrinter cpp(env,id,0);
+                //     PrettyPrintOptions popts = {ppo_multiline_allowed, ppo_include_special_annotations};
+                //     erepository::SpecTreePrettyPrinter a(cpp, popts);
+                //     key->parse_value()->top()->accept(a);
+                //
+                //     std::cout << id->name()
+                //               << " " << key->human_name() << ":\n"
+                //     //          << key->pretty_print_value(cpp, popts) << '\n'
+                //               << stringify(a) << std::endl;
+                // }
+
                 c.labels_stack.push_front(key->initial_labels());
                 key->parse_value()->top()->accept(c);
                 c.labels_stack.pop_front();
