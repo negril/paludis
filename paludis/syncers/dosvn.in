@@ -13,7 +13,7 @@ LOCAL=
 REMOTE=
 
 unset LANG ${!LC_*}
-export LC_ALL=C
+export LC_ALL=C.UTF8
 
 SVN_CHECKOUT_OPTIONS=( )
 

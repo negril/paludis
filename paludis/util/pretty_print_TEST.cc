@@ -43,7 +43,7 @@ TEST(PrettyPrintBytes, Works)
 
 TEST(PrettyPrintTime, Works)
 {
-    std::setlocale(LC_TIME, "C");
+    std::setlocale(LC_TIME, "C.UTF8");
     setenv("TZ", "America/New_York", 1);
     EXPECT_EQ("Fri Feb 13 18:31:30 EST 2009", pretty_print_time(1234567890));
     EXPECT_EQ("Thu Oct 15 10:43:00 EDT 2009", pretty_print_time(1255617780));

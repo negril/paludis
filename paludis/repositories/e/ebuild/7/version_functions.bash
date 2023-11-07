@@ -91,7 +91,7 @@ _ver_parse_range() {
 # Sets 'comp' to an array of the form: ( s_0 c_1 s_1 c_2 s_2 c_3... )
 # where s_i are separators and c_i are components.
 _ver_split() {
-	local v=${1} LC_ALL=C
+	local v=${1} LC_ALL=C.UTF8
 
 	comp=()
 
@@ -198,7 +198,7 @@ _ver_compare_int() {
 # Compare two versions <va> and <vb>.  If <va> is less than, equal to,
 # or greater than <vb>, return 1, 2, or 3 as exit status, respectively.
 _ver_compare() {
-	local va=${1} vb=${2} a an al as ar b bn bl bs br re LC_ALL=C
+	local va=${1} vb=${2} a an al as ar b bn bl bs br re LC_ALL=C.UTF8
 
 	re="^([0-9]+(\.[0-9]+)*)([a-z]?)((_(alpha|beta|pre|rc|p)[0-9]*)*)(-r[0-9]+)?$"
 
