@@ -23,7 +23,7 @@ ebuild_f_loadenv()
 {
     local old_sandbox_write="${SANDBOX_WRITE}"
     [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]] && \
-        SANDBOX_WRITE="${SANDBOX_WRITE+${SANDBOX_WRITE}:}${PALUDIS_LOADSAVEENV_DIR%/}/"
+        SANDBOX_WRITE="${SANDBOX_WRITE+${SANDBOX_WRITE}:}${PALUDIS_LOADSAVEENV_DIR%/}"
 
     if has "loadenv" ${SKIP_FUNCTIONS} ; then
         ebuild_section "Skipping builtin_loadenv (SKIP_FUNCTIONS)"

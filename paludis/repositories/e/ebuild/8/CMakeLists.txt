@@ -2,7 +2,6 @@ install(PROGRAMS
           "${CMAKE_CURRENT_SOURCE_DIR}/builtin_bad_required_use.bash"
           "${CMAKE_CURRENT_SOURCE_DIR}/builtin_infovars.bash"
           "${CMAKE_CURRENT_SOURCE_DIR}/builtin_init.bash"
-          "${CMAKE_CURRENT_SOURCE_DIR}/builtin_initmisc.bash"
           "${CMAKE_CURRENT_SOURCE_DIR}/builtin_initrm.bash"
           "${CMAKE_CURRENT_SOURCE_DIR}/builtin_killold.bash"
           "${CMAKE_CURRENT_SOURCE_DIR}/builtin_killoldrm.bash"

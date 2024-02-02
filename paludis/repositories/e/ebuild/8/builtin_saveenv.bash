@@ -22,7 +22,7 @@ ebuild_load_module --older builtin_saveenv
 ebuild_f_saveenv()
 {
     local old_sandbox_write="${SANDBOX_WRITE}"
-    SANDBOX_WRITE="${SANDBOX_WRITE+${SANDBOX_WRITE}:}${PALUDIS_LOADSAVEENV_DIR%/}/"
+    SANDBOX_WRITE="${SANDBOX_WRITE+${SANDBOX_WRITE}:}${PALUDIS_LOADSAVEENV_DIR%/}"
 
     if has "saveenv" ${SKIP_FUNCTIONS} ; then
         ebuild_section "Skipping builtin_saveenv (SKIP_FUNCTIONS)"

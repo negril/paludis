@@ -741,14 +741,68 @@ KEYWORDS="test"
 S="${WORKDIR}"
 
 test_vars() {
-    [[ -z "${ROOT}" ]] || die 'ROOT is non-empty'
-    [[ -z "${EROOT}" ]] || die 'EROOT is non-empty'
-    [[ "${BROOT}" == "${BROOT%/}" ]] || die 'BROOT has trailing slash'
-    [[ "${D}" == "${D%/}" ]] || die 'D has trailing slash'
-    [[ "${ED}" == "${ED%/}" ]] || die 'ED has trailing slash'
+    echo "ROOT  |${ROOT}|"
+    echo "EROOT |${EROOT}|"
+    echo "BROOT |${BROOT}|"
+    echo "D     |${D}|"
+    echo "ED    |${ED}|"
+
+    [[ -z "${ROOT}" ]] || die "ROOT is non-empty: (${ROOT})"
+    [[ "${ROOT}" == "${ROOT%/}" ]] || die "ROOT has trailing slash1: (${ROOT})"
+    [[ -z "${ROOT}" ]] && [[ "${ROOT: -1}" == "/" ]] && die "ROOT has trailing slash2: (${ROOT})"
+
+    [[ -z "${EROOT}" ]] || die "EROOT is non-empty: (${EROOT})"
+    [[ "${EROOT}" == "${EROOT%/}" ]] || die "EROOT has trailing slash1: (${EROOT})"
+    [[ -z "${EROOT}" ]] && [[ "${EROOT: -1}" == "/" ]] && die "EROOT has trailing slash2: (${EROOT})"
+
+    [[ "${BROOT}" == "${BROOT%/}" ]] || die "BROOT has trailing slash1: (${BROOT})"
+    [[ -z "${BROOT}" ]] && [[ "${BROOT: -1}" == "/" ]] && die "BROOT has trailing slash2: (${BROOT})"
+
+    [[ "${D}" == "${D%/}" ]] || die "D has trailing slash:1 (${D})"
+    [[ -z "${D}" ]] && [[ "${D: -1}" == "/" ]] && die "D has trailing slash2: (${D})"
+
+    [[ "${ED}" == "${ED%/}" ]] || die "ED has trailing slash1: (${ED})"
+    [[ -z "${ED}" ]] && [[ "${ED: -1}" == "/" ]] && die "ED has trailing slash2: (${ED})"
+
+}
+
+pkg_config() {
+    test_vars
+}
+
+pkg_info() {
+    test_vars
+}
+
+pkg_nofetch() {
+    test_vars
+}
+
+pkg_postinst() {
+    test_vars
+}
+
+pkg_postrm() {
+    test_vars
+}
+
+pkg_preinst() {
+    test_vars
+}
+
+pkg_prerm() {
+    test_vars
+}
+
+pkg_pretend() {
+    test_vars
 }
 
 pkg_setup() {
+    test_vars
+}
+
+src_compile() {
     test_vars
 }
 
@@ -756,9 +810,23 @@ src_install() {
     test_vars
 }
 
-pkg_postinst() {
+src_test() {
     test_vars
 }
+
+src_unpack() {
+    test_vars
+}
+
+src_prepare() {
+    test_vars
+}
+
+src_configure() {
+    test_vars
+}
+
+
 END
 
 # eprefix

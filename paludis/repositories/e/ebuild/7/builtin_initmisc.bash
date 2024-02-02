@@ -28,4 +28,10 @@ ebuild_f_initmisc()
         builtin_initmisc
         ebuild_section "Done builtin_initmisc"
     fi
+
+    # strip trailing slashes in EAPI7
+    export ROOT=${ROOT%/}
+    export EROOT=${EROOT%/}
+    export D=${D%/}
+    export ED=${ED%/}
 }
