@@ -38,9 +38,11 @@ diefunc()
     local func="$1" line="$2" nonfatal=
     shift 2
 
-    if [[ -n ${PALUDIS_DIE_SUPPORTS_DASH_N} && $1 == -n && -n ${PALUDIS_FAILURE_IS_NONFATAL} ]] ; then
+    if [[ -n ${PALUDIS_DIE_SUPPORTS_DASH_N} && $1 == -n ]]; then
         shift
-        nonfatal=yes
+        if [[ -n ${PALUDIS_FAILURE_IS_NONFATAL} ]] ; then
+            nonfatal=yes
+        fi
     fi
 
     local message="$*"
