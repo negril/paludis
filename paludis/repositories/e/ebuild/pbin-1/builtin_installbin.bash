@@ -39,7 +39,7 @@ builtin_installbin()
 
 generic_internal_installbin()
 {
-    if hasq "init" ${SKIP_FUNCTIONS} ; then
+    if has "init" ${SKIP_FUNCTIONS} ; then
         ebuild_section "Skipping builtin_installbin (SKIP_FUNCTIONS)"
     else
         ebuild_section "Starting builtin_installbin"
