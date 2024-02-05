@@ -564,7 +564,7 @@ pkg_setup() {
     in_iuse build || die build
     in_iuse cheese || die cheese
     in_iuse otherarch || die otherarch
-    in_iuse userland_GNU || die userland_GNU
+    in_iuse userland_GNU && die userland_GNU
     in_iuse userland_zOS && die userland_zOS
     in_iuse nowhere-flag && die nowhere-flag
 }
