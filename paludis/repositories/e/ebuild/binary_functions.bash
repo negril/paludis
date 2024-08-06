@@ -42,6 +42,8 @@ make_binary_ebuild()
         set +o noglob
     done
 
+    echo 'RESTRICT="mirror"' >> "${ebuildfile}"
+
     sed -e 's,^,        ,' < ${ebuildfile}
 }
 
